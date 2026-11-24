@@ -22,6 +22,11 @@ EXCUSE = (
 
 
 def main() -> int:
+    # The sealed scorer only accepts 1-200 characters, so refuse to write
+    # anything outside that window instead of shipping a bad file.
+    if not 1 <= len(EXCUSE) <= 200 or not EXCUSE.strip():
+        print(f"refusing to write an excuse of {len(EXCUSE)} characters", file=sys.stderr)
+        return 1
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
     path = os.path.join(out_dir, "entry.txt")
